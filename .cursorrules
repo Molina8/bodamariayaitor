@@ -84,3 +84,22 @@ For example:
 - Shared Components: The /src/components folder should contain reusable components used across multiple pages or features.
 
 - Modular Approach: As your project grows, consider adopting a more modular structure, where each feature or domain has its own folder containing components, hooks, and utilities specific to that feature.
+
+
+## UI/UX Design
+// 📐 Diseño UI/UX - Leyes a tener en cuenta:
+
+const uiUxLaws = [
+"Ley de Prägnanz",
+"Ley de Proximidad",
+"Ley de Tesler",
+"Ley de Fitts",
+"Ley de Parkinson",
+"Efecto Von Restorff",
+"Ley de Miller",
+"Ley de Jakob",
+"Ley de posición serial",
+"Efecto Zeigarnik",
+"Principio de Pareto",
+"Ley del Shock",
+];

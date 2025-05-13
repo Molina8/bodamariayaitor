@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import { Guest } from '../types/database';
-import { Download, RefreshCw, Music, User, Phone, Bus, AlignJustify, Users, Mail, Utensils, Home } from 'lucide-react';
+import { Download, RefreshCw, Music, User, Phone, Bus, AlignJustify, Users, Mail, Utensils, Home, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function AdminPanel() {
@@ -10,6 +10,41 @@ export function AdminPanel() {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [totalGuests, setTotalGuests] = useState(0);
   const [expandedGuest, setExpandedGuest] = useState<number | null>(null);
+  const [session, setSession] = useState<any>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [isAuthLoading, setIsAuthLoading] = useState(true);
+
+  useEffect(() => {
+    // Verificar si hay una sesión activa
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+        setIsAuthLoading(false);
+        if (session) {
+          fetchGuests();
+        } else {
+          setIsLoading(false);
+        }
+      }
+    );
+
+    // Obtener la sesión actual al cargar
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setIsAuthLoading(false);
+      if (session) {
+        fetchGuests();
+      } else {
+        setIsLoading(false);
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   async function fetchGuests() {
     setIsRefreshing(true);
@@ -34,10 +69,6 @@ export function AdminPanel() {
       setIsLoading(false);
     }
   }
-
-  useEffect(() => {
-    fetchGuests();
-  }, []);
 
   const handleExportToCSV = () => {
     const headers = ['Nombre', 'Email', 'Teléfono', 'Autobús', 'Parada', 'Restricciones', 'Canción', 'Acompañantes'];
@@ -70,6 +101,109 @@ export function AdminPanel() {
     setExpandedGuest(expandedGuest === guestId ? null : guestId);
   };
 
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoginError('');
+    setIsAuthLoading(true);
+    
+    try {
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) throw error;
+      setSession(data.session);
+    } catch (error: any) {
+      console.error('Error de inicio de sesión:', error);
+      setLoginError(error.message || 'Error al iniciar sesión. Comprueba tus credenciales.');
+    } finally {
+      setIsAuthLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+    } catch (error) {
+      console.error('Error al cerrar sesión:', error);
+    }
+  };
+
+  if (isAuthLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-rose-500" />
+      </div>
+    );
+  }
+
+  if (!session) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+        <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-lg shadow-md">
+          <div className="text-center">
+            <h2 className="mt-6 text-3xl font-extrabold text-gray-900">Panel de Administración</h2>
+            <p className="mt-2 text-sm text-gray-600">Inicia sesión para acceder</p>
+          </div>
+          
+          <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+            {loginError && (
+              <div className="rounded-md bg-red-50 p-4">
+                <div className="text-sm text-red-700">{loginError}</div>
+              </div>
+            )}
+            
+            <div className="rounded-md -space-y-px">
+              <div className="mb-4">
+                <label htmlFor="email" className="sr-only">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-rose-500 focus:border-rose-500 focus:z-10 sm:text-sm"
+                  placeholder="Email"
+                />
+              </div>
+              <div>
+                <label htmlFor="password" className="sr-only">Contraseña</label>
+                <input
+                  id="password"
+                  name="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-rose-500 focus:border-rose-500 focus:z-10 sm:text-sm"
+                  placeholder="Contraseña"
+                />
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={isAuthLoading}
+                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-rose-600 hover:bg-rose-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-rose-500 disabled:opacity-50"
+              >
+                {isAuthLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+              </button>
+            </div>
+          </form>
+          
+          <div className="mt-4 text-center">
+            <Link to="/" className="text-sm text-rose-600 hover:text-rose-500">
+              Volver a la página principal
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -86,6 +220,11 @@ export function AdminPanel() {
           <p className="text-gray-600 mt-2">
             Total de invitados confirmados: {totalGuests}
           </p>
+          {session && (
+            <p className="text-gray-500 text-sm mt-1">
+              Conectado como: {session.user.email}
+            </p>
+          )}
         </div>
         <div className="flex flex-wrap gap-3">
           <Link 
@@ -109,6 +248,13 @@ export function AdminPanel() {
           >
             <Download className="h-4 w-4 mr-2" />
             Exportar CSV
+          </button>
+          <button
+            onClick={handleLogout}
+            className="inline-flex items-center px-3 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+          >
+            <LogOut className="h-4 w-4 mr-2" />
+            Cerrar sesión
           </button>
         </div>
       </div>

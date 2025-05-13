@@ -14,7 +14,7 @@ interface Companion {
   favoriteMusic: string;
 }
 
-type BusRoute = 'la-opinion' | 'jardin-siempre-verde' | '';
+type BusRoute = 'ayuntamiento' | 'hotel-nelva' | '';
 
 interface FormData {
   name: string;
@@ -138,7 +138,10 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ onSubmit }) => {
         companions: formData.companions.length > 0 
           ? `y ${formData.companions.length} acompañante${formData.companions.length > 1 ? 's' : ''}`
           : '',
-        domain: window.location.hostname
+        domain: window.location.hostname,
+        bus_details: formData.busService && formData.busRoute 
+          ? `Recuerda que has solicitado servicio de autobús desde la parada: ${formData.busRoute === 'ayuntamiento' ? 'Ayuntamiento' : 'Hotel Nelva'}`
+          : ''
       };
 
       // try {
@@ -287,6 +290,42 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ onSubmit }) => {
                 />
               </button>
             </div>
+
+            {formData.busService && (
+              <div className="mt-3">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Selecciona una parada
+                </label>
+                <div className="space-y-2">
+                  <div className="flex items-center">
+                    <input
+                      id="ayuntamiento"
+                      name="busRoute"
+                      type="radio"
+                      checked={formData.busRoute === 'ayuntamiento'}
+                      onChange={() => setFormData({ ...formData, busRoute: 'ayuntamiento' })}
+                      className="h-4 w-4 text-rose-500 focus:ring-rose-500 border-gray-300"
+                    />
+                    <label htmlFor="ayuntamiento" className="ml-3 block text-sm font-medium text-gray-700">
+                      Ayuntamiento
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      id="hotel-nelva"
+                      name="busRoute"
+                      type="radio"
+                      checked={formData.busRoute === 'hotel-nelva'}
+                      onChange={() => setFormData({ ...formData, busRoute: 'hotel-nelva' })}
+                      className="h-4 w-4 text-rose-500 focus:ring-rose-500 border-gray-300"
+                    />
+                    <label htmlFor="hotel-nelva" className="ml-3 block text-sm font-medium text-gray-700">
+                      Hotel Nelva
+                    </label>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

@@ -17,8 +17,8 @@ const BusSchedule = () => {
     {
       type: "ida",
       departures: [
-        { location: "Plaza Circular", time: "18:15" },
-        { location: "Hotel Nelva", time: "18:30" }
+        { location: "Ayuntamiento", time: "18:15" },
+        { location: "Hotel Nelva", time: "18:15" }
       ],
     },
     {
@@ -38,9 +38,7 @@ const BusSchedule = () => {
           <p className="text-gray-600 mb-2">
             Hemos organizado un servicio de autobús para facilitar el transporte de nuestros invitados
           </p>
-          <p className="text-amber-700 text-sm font-medium bg-amber-50 py-2 px-4 rounded-md inline-block border border-amber-200">
-            ⚠️ Los horarios son provisionales y se confirmarán próximamente
-          </p>
+         
         </div>
 
         <div className="grid gap-8">
@@ -93,6 +91,9 @@ const BusSchedule = () => {
                   <div className="mt-4 bg-rose-100 p-3 rounded-md">
                     <p className="text-rose-800 text-sm italic">
                       * El fin de la fiesta está previsto para las 5:00am
+                    </p>
+                    <p className="text-rose-800 text-sm mt-2">
+                      <span className="font-medium">Ruta de vuelta:</span> Finca Siempre Verde → Hotel Nelva → Ayuntamiento
                     </p>
                   </div>
                 )}

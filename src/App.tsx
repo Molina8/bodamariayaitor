@@ -1,12 +1,12 @@
 import{ useState, useEffect } from 'react';
-import { MapPin, Clock, Mail, Phone, Shirt, CalendarPlus } from 'lucide-react';
+import { MapPin, Clock, Mail, Phone, Shirt, CalendarPlus, User } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
 import RSVPForm from './components/RSVPForm';
 import BusSchedule from './components/BusSchedule';
 import { LocationSection } from './components/LocationSection';
 import { HeroSection } from './components/HeroSection';
 import { ScrollToTop } from './components/ScrollToTop';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { AdminPanel } from './components/AdminPanel';
 
 function App() {
@@ -191,6 +191,15 @@ END:VCALENDAR`;
                       <Phone className="w-5 h-5" />
                       679 847 372
                     </a>
+                  </div>
+                  <div className="mt-8">
+                    <Link 
+                      to="/admin" 
+                      className="inline-flex items-center gap-2 text-gray-400 hover:text-rose-400 transition-colors"
+                      aria-label="Acceso administración"
+                    >
+                      <User className="w-5 h-5" />
+                    </Link>
                   </div>
                 </div>
               </footer>
