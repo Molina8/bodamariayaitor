@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boda María & Aitor</title>
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light only">
+    <style>
+        body, p, div, h1, h2, h3, span, strong, a {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+            mso-color-alt: #ffffff !important;
+        }
+        .force-white {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+            mso-color-alt: #ffffff !important;
+        }
+        /* Especifícamente para clientes móviles problemáticos */
+        [data-ogsc] .force-white,
+        [data-ogsb] .force-white {
+            color: #ffffff !important;
+        }
+        /* Prevenir inversión de colores en cualquier modo oscuro */
+        .white-text {
+            color: #ffffff !important;
+        }
+        @media (prefers-color-scheme: dark) {
+            .white-text {
+                color: #ffffff !important;
+            }
+            .dark-mode-reset {
+                color: #ffffff !important;
+                filter: none !important;
+                -webkit-filter: none !important;
+            }
+        }
+        @media screen and (max-width: 600px) {
+            .mobile-white {
+                color: #ffffff !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; line-height: 1.6; color: #ffffff; background-color: #fdf2f4;" class="dark-mode-reset white-text mobile-white">
+    <!-- Tabla principal con imagen de fondo -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" background="https://dl.dropboxusercontent.com/scl/fi/gtvhxqpk4zckni6ib3nei/anillo.jpeg?rlkey=zphqlfjzb0e9w2p6th69518ai&st=eapk5wer" style="background-position: center; background-size: cover; background-repeat: no-repeat;">
+        <tr>
+            <td align="center" valign="top" style="padding: 40px 20px;">
+                <!-- Contenido directo sobre la imagen -->
+                <div style="max-width: 600px; margin: 0 auto; text-shadow: 1px 1px 3px rgba(0,0,0,0.5);" class="dark-mode-reset">
+                    
+                    <!-- Encabezado -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                            <td align="center" style="padding: 30px 20px 20px;">
+                                <h1 style="color: #ffffff; margin: 0; font-size: 32px; font-family: Arial, sans-serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);" class="dark-mode-reset white-text mobile-white">¡Gracias {{guest_name}}!</h1>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <!-- Contenido principal -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                            <td style="padding: 20px 30px;">
+                                <p style="margin-top: 0; margin-bottom: 20px; font-size: 18px; font-weight: 500; color: #ffffff;" class="dark-mode-reset white-text mobile-white">Nos hace mucha ilusión que nos acompañes {{companions}} en nuestra boda. Será una noche inolvidable y estamos felices de poder compartirla contigo.</p>
+                                
+                                <!-- Detalles del evento -->
+                                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: rgba(0, 0, 0, 0.45); border-radius: 12px; margin: 20px 0; border-left: 4px solid rgba(244, 63, 94, 0.7); box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+                                    <tr>
+                                        <td style="padding: 25px;">
+                                            <h2 style="color: #ffffff; margin-top: 0; margin-bottom: 20px; font-size: 24px; font-family: Arial, sans-serif; text-shadow: 1px 1px 3px rgba(0,0,0,0.7);" class="dark-mode-reset white-text mobile-white">Detalles del evento</h2>
+                                            
+                                            <div style="margin: 12px 0; font-size: 18px; font-weight: 500; color: #ffffff;">
+                                                <strong style="color: #ffffff;" class="dark-mode-reset white-text mobile-white">📅 Fecha:</strong> <span style="color: #ffffff;" class="dark-mode-reset white-text mobile-white">{{event_date}}</span>
+                                            </div>
+                                            
+                                            <div style="margin: 12px 0; font-size: 18px; font-weight: 500; color: #ffffff;">
+                                                <strong style="color: #ffffff;" class="dark-mode-reset white-text mobile-white">⏰ Hora:</strong> <span style="color: #ffffff;" class="dark-mode-reset white-text mobile-white">{{event_time}}</span>
+                                            </div>
+                                            
+                                            <div style="margin: 12px 0; font-size: 18px; font-weight: 500; color: #ffffff;">
+                                                <strong style="color: #ffffff;" class="dark-mode-reset white-text mobile-white">📍 Lugar:</strong> <span style="color: #ffffff;" class="dark-mode-reset white-text mobile-white">{{event_location}}</span>
+                                            </div>
+                                            
+                                            <div style="margin-top: 20px; text-align: center;">
+                                                <a href="{{maps_url}}" style="display: inline-block; background-color: rgba(244, 63, 94, 0.9); color: #ffffff !important; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; text-align: center; box-shadow: 0 4px 8px rgba(0,0,0,0.25);" target="_blank" class="dark-mode-reset white-text mobile-white">
+                                                    <span style="color: #ffffff !important;" class="dark-mode-reset white-text mobile-white">Ver ubicación en Google Maps</span>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+                                
+                                <p style="margin-bottom: 0; font-size: 18px; font-weight: 500; color: #ffffff;" class="dark-mode-reset white-text mobile-white">Si tienes alguna pregunta o necesitas más información, no dudes en contactarnos.</p>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <!-- Pie de página -->
+                    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                        <tr>
+                            <td align="center" style="padding: 20px;">
+                                <p style="margin-top: 0; margin-bottom: 10px; font-size: 18px; font-weight: 500; color: #ffffff;" class="dark-mode-reset white-text mobile-white">¡Nos vemos pronto!</p>
+                                <h2 style="color: #ffffff; margin: 0; font-size: 28px; font-family: Arial, sans-serif; text-shadow: 2px 2px 4px rgba(0,0,0,0.7);" class="dark-mode-reset white-text mobile-white">María & Aitor</h2>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+    <!-- Hack para prevenir cambios de color en Gmail móvil -->
+    <div style="display:none; white-space:nowrap; font:15px courier; line-height:0;">
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+    </div>
+</body>
+</html>
