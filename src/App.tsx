@@ -1,6 +1,7 @@
-import{ useState, useEffect } from 'react';
-import { MapPin, Clock, Mail, Phone, Shirt, CalendarPlus, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { MapPin, Clock, Mail, Phone, Shirt, CalendarPlus, User, Heart } from 'lucide-react';
 import { Toaster } from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
 import RSVPForm from './components/RSVPForm';
 import BusSchedule from './components/BusSchedule';
 import { LocationSection } from './components/LocationSection';
@@ -82,9 +83,49 @@ END:VCALENDAR`;
     }, 100);
   };
 
+  // Variantes para animaciones
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6 }
+    }
+  };
+
+  const staggerContainer = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  };
+
   return (
     <Router>
-      <div className="min-h-screen flex flex-col">
+      <div className="min-h-screen flex flex-col bg-gradient-to-b from-rose-50 to-white overflow-hidden relative">
+        {/* Elementos decorativos de jardín */}
+        <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden opacity-20">
+          <div className="absolute top-0 left-0 w-64 h-64 bg-rose-300 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2"></div>
+          <div className="absolute bottom-0 right-0 w-80 h-80 bg-rose-200 rounded-full blur-3xl transform translate-x-1/2 translate-y-1/2"></div>
+          <div className="absolute top-1/3 right-1/4 w-40 h-40 bg-amber-200 rounded-full blur-3xl"></div>
+          <div className="absolute top-2/3 left-1/4 w-48 h-48 bg-purple-200 rounded-full blur-3xl"></div>
+          
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div 
+              key={i}
+              className="absolute w-1 h-40 bg-gradient-to-b from-rose-300 to-transparent opacity-40"
+              style={{ 
+                top: `${Math.random() * 100}%`, 
+                left: `${Math.random() * 100}%`,
+                transform: `rotate(${Math.random() * 360}deg)`,
+              }}
+            ></div>
+          ))}
+        </div>
+        
         <ScrollToTop />
         <Toaster position="top-center" />
         
@@ -93,116 +134,257 @@ END:VCALENDAR`;
           <Route path="/" element={
             <>
               <HeroSection />
+              
               {/* Wedding Details */}
-              <section className="py-20 px-4 bg-white">
-                <div className="max-w-4xl mx-auto text-center">
-                  <h2 className="text-3xl font-serif mb-12">Detalles de la Ceremonia</h2>
+              <section id="details-section" className="py-24 px-4 relative z-10">
+                <motion.div 
+                  className="max-w-4xl mx-auto text-center"
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-100px" }}
+                  variants={fadeInUp}
+                >
+                  <h2 className="text-4xl font-serif mb-16 text-rose-800 relative inline-block">
+                    Detalles de la Ceremonia
+                    <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent bottom-0 left-0"></div>
+                  </h2>
                   
-                  <div className="grid md:grid-cols-3 gap-8">
-                    <div className="flex flex-col items-center">
-                      <Clock className="w-10 h-10 text-rose-500 mb-4" />
-                      <h3 className="text-xl mb-2">Hora</h3>
-                      <p>19:00 hrs</p>
-                    </div>
-                    
-                    <div className="flex flex-col items-center">
-                      <MapPin className="w-10 h-10 text-rose-500 mb-4" />
-                      <h3 className="text-xl mb-2">Lugar</h3>
-                      <p>Finca Siempre Verde</p>
-                      <p>Cmo. Don Luis, 12</p>
-                      <p>30110 Murcia</p>
-                    </div>
-                    
-                    <div className="flex flex-col items-center">
-                      <Shirt className="w-10 h-10 text-rose-500 mb-4" />
-                      <h3 className="text-xl mb-2">Código de Vestimenta</h3>
-                      <p>Formal</p>
-                    </div>
-                  </div>
-                </div>
-              </section>
-              <BusSchedule />
-              {/* RSVP Section */}
-              <section className="py-20 px-4 bg-rose-50">
-                <div className="max-w-4xl mx-auto text-center">
-                  <h2 className="text-3xl font-serif mb-8">Confirmación de Asistencia</h2>
-                  
-                  {!hasResponded && !showRSVPForm ? (
-                    <div className="space-y-6">
-                      <p className="text-lg mb-8">¿Nos acompañarás en este día tan especial?</p>
-                      <div className="flex flex-col items-center gap-6">
-                        <div className="flex justify-center gap-4">
-                          <button
-                            onClick={handleShowForm}
-                            className="bg-rose-500 text-white px-8 py-3 rounded-lg hover:bg-rose-600 transition"
-                          >
-                            Sí, asistiré
-                          </button>
-                          <button
-                            onClick={() => setHasResponded(true)}
-                            className="bg-gray-500 text-white px-8 py-3 rounded-lg hover:bg-gray-600 transition"
-                          >
-                            No podré asistir
-                          </button>
-                        </div>
+                  <motion.div 
+                    className="grid md:grid-cols-3 gap-12"
+                    variants={staggerContainer}
+                  >
+                    <motion.div 
+                      className="flex flex-col items-center p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-[0_10px_30px_-15px_rgba(244,63,94,0.3)] border border-rose-100 hover:shadow-[0_20px_40px_-15px_rgba(244,63,94,0.45)] transition-all duration-300"
+                      variants={fadeInUp}
+                    >
+                      <div className="w-16 h-16 rounded-full bg-rose-100 flex items-center justify-center mb-6 shadow-[0_8px_16px_-6px_rgba(244,63,94,0.3)]">
+                        <Clock className="w-8 h-8 text-rose-600" />
                       </div>
-                    </div>
-                  ) : hasResponded ? (
-                    <p className="text-xl">¡Gracias por tu respuesta!</p>
-                  ) : null}
+                      <h3 className="text-2xl font-medium mb-3 text-rose-800">Hora</h3>
+                      <p className="text-slate-700">19:00 hrs</p>
+                    </motion.div>
+                    
+                    <motion.div 
+                      className="flex flex-col items-center p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-[0_10px_30px_-15px_rgba(251,191,36,0.3)] border border-rose-100 hover:shadow-[0_20px_40px_-15px_rgba(251,191,36,0.45)] transition-all duration-300"
+                      variants={fadeInUp}
+                    >
+                      <div className="w-16 h-16 rounded-full bg-amber-100 flex items-center justify-center mb-6 shadow-[0_8px_16px_-6px_rgba(251,191,36,0.3)]">
+                        <MapPin className="w-8 h-8 text-amber-600" />
+                      </div>
+                      <h3 className="text-2xl font-medium mb-3 text-rose-800">Lugar</h3>
+                      <p className="text-slate-700">Finca Siempre Verde</p>
+                      <p className="text-slate-700">Cmo. Don Luis, 12</p>
+                      <p className="text-slate-700">30110 Murcia</p>
+                    </motion.div>
+                    
+                    <motion.div 
+                      className="flex flex-col items-center p-8 bg-white/80 backdrop-blur-sm rounded-2xl shadow-[0_10px_30px_-15px_rgba(168,85,247,0.3)] border border-rose-100 hover:shadow-[0_20px_40px_-15px_rgba(168,85,247,0.45)] transition-all duration-300"
+                      variants={fadeInUp}
+                    >
+                      <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center mb-6 shadow-[0_8px_16px_-6px_rgba(168,85,247,0.3)]">
+                        <Shirt className="w-8 h-8 text-purple-600" />
+                      </div>
+                      <h3 className="text-2xl font-medium mb-3 text-rose-800">Código de Vestimenta</h3>
+                      <p className="text-slate-700">Formal</p>
+                    </motion.div>
+                  </motion.div>
+                </motion.div>
+              </section>
+              
+              <BusSchedule />
+              
+              {/* RSVP Section */}
+              <motion.section 
+                className="py-24 px-4 bg-gradient-to-br from-rose-50 to-lavender-50 relative overflow-hidden"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, margin: "-100px" }}
+                variants={fadeInUp}
+              >
+                {/* Decorative elements */}
+                <div className="absolute inset-0 pointer-events-none">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute w-8 h-8 text-rose-400"
+                      style={{
+                        top: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}%`
+                      }}
+                      animate={{
+                        y: [0, -10, 0],
+                        rotate: [0, 5, -5, 0]
+                      }}
+                      transition={{
+                        duration: 4,
+                        repeat: Infinity,
+                        delay: i * 0.8,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <Heart strokeWidth={1.5} />
+                    </motion.div>
+                  ))}
+                </div>
+                
+                <div className="max-w-4xl mx-auto text-center relative z-10">
+                  <motion.h2 
+                    className="text-4xl font-serif mb-12 text-rose-800 relative inline-block"
+                    variants={fadeInUp}
+                  >
+                    Confirmación de Asistencia
+                    <div className="absolute w-full h-1 bg-gradient-to-r from-transparent via-rose-400 to-transparent bottom-0 left-0"></div>
+                  </motion.h2>
+                  
+                  <AnimatePresence mode="wait">
+                    {!hasResponded && !showRSVPForm ? (
+                      <motion.div 
+                        className="space-y-6"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        key="buttons"
+                      >
+                        <p className="text-xl mb-10 text-slate-700">¿Nos acompañarás en este día tan especial?</p>
+                        <div className="flex flex-col items-center gap-6">
+                          <div className="flex flex-wrap justify-center gap-4">
+                            <motion.button
+                              onClick={handleShowForm}
+                              className="bg-gradient-to-r from-rose-500 to-rose-600 text-white px-10 py-4 rounded-lg shadow-[0_10px_25px_-5px_rgba(244,63,94,0.5)] hover:shadow-[0_20px_35px_-5px_rgba(244,63,94,0.65)] transition-all duration-300 transform hover:-translate-y-1"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              Sí, asistiré
+                            </motion.button>
+                            <motion.button
+                              onClick={() => setHasResponded(true)}
+                              className="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-10 py-4 rounded-lg shadow-[0_10px_25px_-5px_rgba(107,114,128,0.5)] hover:shadow-[0_20px_35px_-5px_rgba(107,114,128,0.65)] transition-all duration-300 transform hover:-translate-y-1"
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.98 }}
+                            >
+                              No podré asistir
+                            </motion.button>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ) : hasResponded ? (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        key="thankyou"
+                      >
+                        <p className="text-2xl text-rose-800 font-serif">¡Gracias por tu respuesta!</p>
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
 
                   {showRSVPForm && !hasResponded && (
-                    <div id="rsvp-form">
+                    <motion.div 
+                      id="rsvp-form"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                    >
                       <RSVPForm onSubmit={() => setHasResponded(true)} />
-                    </div>
+                    </motion.div>
                   )}
                   
-                  <div className="mt-8">
-                    <button
+                  <motion.div 
+                    className="mt-12"
+                    variants={fadeInUp}
+                  >
+                    <motion.button
                       onClick={() => handleAddToCalendar('google')}
-                      className="inline-flex items-center gap-2 px-6 py-2.5 text-rose-600 bg-white border-2 border-rose-200 rounded-lg hover:bg-rose-50 hover:border-rose-300 transition-all shadow-sm"
+                      className="inline-flex items-center gap-3 px-8 py-3.5 text-rose-700 bg-white border-2 border-rose-200 rounded-lg hover:bg-rose-50 hover:border-rose-300 transition-all shadow-[0_10px_20px_-8px_rgba(244,63,94,0.25)] hover:shadow-[0_14px_28px_-8px_rgba(244,63,94,0.4)]"
+                      whileHover={{ scale: 1.03 }}
+                      whileTap={{ scale: 0.98 }}
                     >
                       <CalendarPlus className="w-5 h-5" />
                       Agregar fecha al calendario
-                    </button>
-                  </div>
+                    </motion.button>
+                  </motion.div>
                 </div>
-              </section>
+              </motion.section>
+              
               <main className="flex-grow">
                 {/* ... contenido principal ... */}
               </main>
+              
               <LocationSection />
               
-              <footer className="bg-gray-900 text-white py-8">
-                <div className="max-w-4xl mx-auto text-center">
-                  <h2 className="text-2xl font-serif mb-8">¿Tienes preguntas?</h2>
-                  <div className="flex flex-col md:flex-row justify-center gap-4 md:gap-8">
-                    <a 
+              <motion.footer 
+                className="bg-gradient-to-r from-rose-100 to-rose-200 text-rose-800 py-12 relative overflow-hidden"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeInUp}
+              >
+                {/* Elementos decorativos */}
+                <div className="absolute inset-0 opacity-10 pointer-events-none">
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <div 
+                      key={i} 
+                      className="absolute w-32 h-32 border border-rose-400 rounded-full"
+                      style={{
+                        top: `${Math.random() * 100}%`,
+                        left: `${Math.random() * 100}%`,
+                        transform: `scale(${0.5 + Math.random() * 1.5})`,
+                      }}
+                    ></div>
+                  ))}
+                </div>
+                
+                <div className="max-w-4xl mx-auto text-center z-10 relative">
+                  <motion.h2 
+                    className="text-3xl font-serif mb-10 text-rose-800"
+                    variants={fadeInUp}
+                  >
+                    ¿Tienes preguntas?
+                  </motion.h2>
+                  
+                  <motion.div 
+                    className="flex flex-col md:flex-row justify-center gap-6 md:gap-12"
+                    variants={staggerContainer}
+                  >
+                    <motion.a 
                       href="mailto:mariamolinapiernas@gmail.com" 
-                      className="flex items-center gap-2 hover:text-rose-400 transition-colors"
+                      className="flex items-center gap-3 hover:text-rose-600 transition-colors group"
+                      variants={fadeInUp}
+                      whileHover={{ scale: 1.05 }}
                     >
-                      <Mail className="w-5 h-5" />
+                      <div className="w-10 h-10 rounded-full bg-white/70 flex items-center justify-center group-hover:bg-white transition-colors shadow-[0_6px_12px_-3px_rgba(244,63,94,0.3)] group-hover:shadow-[0_8px_16px_-3px_rgba(244,63,94,0.4)]">
+                        <Mail className="w-5 h-5 text-rose-600" />
+                      </div>
                       mariamolinapiernas@gmail.com
-                    </a>
-                    <a 
+                    </motion.a>
+                    
+                    <motion.a 
                       href="tel:+34679847372" 
-                      className="flex items-center gap-2 hover:text-rose-400 transition-colors"
+                      className="flex items-center gap-3 hover:text-rose-600 transition-colors group"
+                      variants={fadeInUp}
+                      whileHover={{ scale: 1.05 }}
                     >
-                      <Phone className="w-5 h-5" />
+                      <div className="w-10 h-10 rounded-full bg-white/70 flex items-center justify-center group-hover:bg-white transition-colors shadow-[0_6px_12px_-3px_rgba(244,63,94,0.3)] group-hover:shadow-[0_8px_16px_-3px_rgba(244,63,94,0.4)]">
+                        <Phone className="w-5 h-5 text-rose-600" />
+                      </div>
                       679 847 372
-                    </a>
-                  </div>
-                  <div className="mt-8">
+                    </motion.a>
+                  </motion.div>
+                  
+                  <motion.div 
+                    className="mt-12"
+                    variants={fadeInUp}
+                  >
                     <Link 
                       to="/admin" 
-                      className="inline-flex items-center gap-2 text-gray-400 hover:text-rose-400 transition-colors"
+                      className="inline-flex items-center gap-2 text-rose-600 hover:text-amber-500 transition-colors opacity-60 hover:opacity-100"
                       aria-label="Acceso administración"
                     >
                       <User className="w-5 h-5" />
                     </Link>
-                  </div>
+                  </motion.div>
                 </div>
-              </footer>
+              </motion.footer>
             </>
           } />
         </Routes>
