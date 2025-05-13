@@ -71,16 +71,16 @@ END:VCALENDAR`;
 
   const handleShowForm = () => {
     setShowRSVPForm(true);
-    // Esperamos un tick para que el formulario se renderice
+    // Esperamos un poco más para que el formulario se renderice completamente
     setTimeout(() => {
-      const formElement = document.getElementById('rsvp-form');
-      if (formElement) {
-        formElement.scrollIntoView({ 
+      const formAnchor = document.getElementById('form-anchor');
+      if (formAnchor) {
+        formAnchor.scrollIntoView({ 
           behavior: 'smooth',
-          block: 'center'
+          block: 'start'
         });
       }
-    }, 100);
+    }, 450); // Aumentamos el tiempo para asegurarnos de que todo está renderizado
   };
 
   // Variantes para animaciones

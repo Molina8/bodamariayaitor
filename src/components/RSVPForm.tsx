@@ -189,10 +189,11 @@ const RSVPForm: React.FC<RSVPFormProps> = ({ onSubmit }) => {
   };
 
   return (
-    <div className="mt-12 max-w-lg mx-auto">
+    <div className="mt-8 max-w-lg mx-auto relative">
+      <div id="form-anchor" className="absolute -top-24"></div>
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md space-y-6">
         {/* Datos principales */}
-        <div className="space-y-6">
+        <div className="space-y-6" id="form-start">
           <h3 className="text-lg font-medium text-gray-900">Tus datos</h3>
           
           <div>
